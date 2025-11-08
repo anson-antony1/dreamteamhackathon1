@@ -66,3 +66,31 @@ export type DiagnosticPayload = {
   userSymptom: string;
   aiSummary: string;
 }
+
+/**
+ * Bloodwork test result value
+ * Represents a single test value with its status and explanation
+ */
+export type BloodworkValue = {
+  name: string;              // Test name (e.g., "Glucose", "Hemoglobin")
+  value: number;             // Numeric value
+  unit: string;              // Unit of measurement (e.g., "mg/dL", "g/dL")
+  normalRange: string;        // Normal range description
+  status: "normal" | "low" | "high" | "critical";  // Status based on value
+  explanation: string;       // Simple explanation of what this means
+}
+
+/**
+ * Complete bloodwork screening result
+ * Contains all extracted values and overall analysis
+ */
+export type BloodworkScreeningResult = {
+  id?: string;
+  userId: string;
+  fileName: string;
+  uploadedAt: string;
+  values: BloodworkValue[];
+  summary: string;           // Overall summary in simple terms
+  recommendations: string[]; // Array of recommendations
+  flaggedCount: number;      // Number of values outside normal range
+}
