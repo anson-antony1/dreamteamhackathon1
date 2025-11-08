@@ -1,0 +1,26 @@
+const express = require("express");
+const fetch = require("node-fetch");
+const app = express();
+app.use(express.json());
+
+app.post("/api/chat", async (req, res) => {
+  const { messages } = req.body;
+  const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer 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`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: "gpt-3.5-turbo",
+      messages: messages.map(m => ({ role: m.role, content: m.content }))
+    })
+  });
+  const data = await openaiRes.json();
+  res.json({
+    type: "none",
+    reply: data.choices?.[0]?.message?.content || "No response"
+  });
+});
+
+app.listen(3001, () => console.log("AI worker running on port 3001"));
